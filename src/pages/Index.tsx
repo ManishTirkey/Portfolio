@@ -8,9 +8,10 @@ import ContactSection from '@/components/ContactSection';
 import SocialLinks from '@/components/SocialLinks';
 import BackgroundEffect from '@/components/BackgroundEffect';
 import { cn } from '@/lib/utils';
+import WelcomeSection from '@/components/WelcomeSection';
 
 const Index = () => {
-  const [activeSection, setActiveSection] = useState<string>('about');
+  const [activeSection, setActiveSection] = useState<string>('music');
 
   const handleMenuItemClick = (section: string) => {
     // Handle external links
@@ -46,15 +47,16 @@ const Index = () => {
         <div className="container max-w-6xl px-4 mx-auto">
           {/* Content wrapper */}
           <div className="flex flex-wrap items-center justify-center gap-8">
-            {/* Content sections */}
+            {/* Content sections - only one shown at a time */}
             <div className="transition-all duration-500">
+              {activeSection === 'welcome' && <WelcomeSection />}
               {activeSection === 'about' && <AboutSection />}
               {activeSection === 'projects' && <ProjectsSection />}
               {activeSection === 'contact' && <ContactSection />}
               {(activeSection === 'github' || activeSection === 'linkedin') && <SocialLinks />}
             </div>
             
-            {/* Music player - always visible */}
+            {/* Music player - always visible but highlighted when selected */}
             <div className={cn(
               "transition-all duration-500",
               activeSection === 'music' ? "scale-110" : "scale-100"

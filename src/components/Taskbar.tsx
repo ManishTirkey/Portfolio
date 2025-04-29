@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { User, FolderKanban, Mail, Github, Linkedin, Music } from 'lucide-react';
+import { User, FolderKanban, Mail, Github, Linkedin, Music, Home } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface TaskbarProps {
@@ -12,6 +12,7 @@ const Taskbar = ({ onMenuItemClick, activeSection }: TaskbarProps) => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
   const menuItems = [
+    { id: 'welcome', icon: Home, label: 'Welcome' },
     { id: 'about', icon: User, label: 'About' },
     { id: 'projects', icon: FolderKanban, label: 'Projects' },
     { id: 'contact', icon: Mail, label: 'Contact Me' },
@@ -22,7 +23,7 @@ const Taskbar = ({ onMenuItemClick, activeSection }: TaskbarProps) => {
 
   return (
     <div className="fixed left-6 top-1/2 -translate-y-1/2 z-50">
-      <div className="glass-taskbar flex flex-col items-center justify-center py-6 px-3 gap-8 rounded-full">
+      <div className="glass-taskbar-enhanced flex flex-col items-center justify-center py-8 px-4 gap-8 rounded-full shadow-glow">
         {menuItems.map((item) => {
           const isActive = activeSection === item.id;
           const isHovered = hoveredItem === item.id;
@@ -38,10 +39,12 @@ const Taskbar = ({ onMenuItemClick, activeSection }: TaskbarProps) => {
                 onClick={() => onMenuItemClick(item.id)}
                 className={cn(
                   "p-2 rounded-full transition-all duration-300 icon-hover",
-                  isActive ? "bg-sidebar-primary text-white" : "text-sidebar-foreground hover:text-white"
+                  isActive 
+                    ? "bg-sidebar-primary text-white shadow-glow-sm scale-110" 
+                    : "text-sidebar-foreground hover:text-white"
                 )}
               >
-                <item.icon size={24} />
+                <item.icon size={24} className={isActive ? "animate-float" : ""} />
               </button>
               
               {/* Label tooltip */}
@@ -49,7 +52,7 @@ const Taskbar = ({ onMenuItemClick, activeSection }: TaskbarProps) => {
                 "absolute left-14 top-1/2 -translate-y-1/2 glass-morphism px-3 py-1.5 rounded-md whitespace-nowrap",
                 "opacity-0 group-hover:opacity-100 transition-opacity duration-300",
               )}>
-                <span className="text-sm font-medium">{item.label}</span>
+                <span className="text-sm font-medium font-display">{item.label}</span>
               </div>
             </div>
           );
