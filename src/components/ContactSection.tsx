@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Mail, Send } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ const ContactSection = () => {
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const { toast } = useToast();
 
   const handleChange = (
@@ -25,6 +27,7 @@ const ContactSection = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitError(null);
 
     try {
       // Send form data to our email handler
@@ -36,6 +39,12 @@ const ContactSection = () => {
         body: JSON.stringify(formData),
       });
 
+      // Check if response is ok before trying to parse JSON
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Server responded with ${response.status}: ${errorText}`);
+      }
+      
       const data = await response.json();
 
       if (response.ok) {
@@ -49,6 +58,7 @@ const ContactSection = () => {
       }
     } catch (error) {
       console.error('Error sending message:', error);
+      setSubmitError(error instanceof Error ? error.message : 'An unexpected error occurred');
       toast({
         title: "Failed to send message",
         description: "Please try again later or contact me directly.",
@@ -67,6 +77,12 @@ const ContactSection = () => {
       <p className="mb-6 text-gray-300">
         Feel free to reach out if you have any questions or just want to say hello!
       </p>
+
+      {submitError && (
+        <Alert variant="destructive" className="mb-4">
+          <AlertDescription>{submitError}</AlertDescription>
+        </Alert>
+      )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>

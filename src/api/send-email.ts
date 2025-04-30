@@ -13,7 +13,12 @@ export async function POST(request: Request) {
     if (!name || !email || !message) {
       return new Response(
         JSON.stringify({ error: 'Name, email and message are required' }),
-        { status: 400 }
+        { 
+          status: 400,
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
       );
     }
 
@@ -27,8 +32,6 @@ export async function POST(request: Request) {
         Email: ${email}
         Message: ${message}
       `,
-      // You can use React for HTML emails if you prefer
-      // react: <YourEmailTemplate name={name} message={message} />
     });
 
     // Send confirmation email to the user
@@ -53,19 +56,34 @@ export async function POST(request: Request) {
       console.error('Resend API error:', ownerEmailResult.error || userEmailResult.error);
       return new Response(
         JSON.stringify({ error: 'Failed to send email' }),
-        { status: 500 }
+        { 
+          status: 500,
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
       );
     }
 
     return new Response(
       JSON.stringify({ message: 'Email sent successfully' }),
-      { status: 200 }
+      { 
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
     );
   } catch (error) {
     console.error('Error in send-email handler:', error);
     return new Response(
       JSON.stringify({ error: 'Internal server error' }),
-      { status: 500 }
+      { 
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
     );
   }
 }
