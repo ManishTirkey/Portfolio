@@ -10,6 +10,7 @@ import BackgroundEffect from '@/components/BackgroundEffect';
 import { cn } from '@/lib/utils';
 import WelcomeSection from '@/components/WelcomeSection';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Toaster } from '@/components/ui/toaster';
 
 const Index = () => {
   // Single state to track which section is active
@@ -80,6 +81,9 @@ const Index = () => {
           </div>
         </div>
       </div>
+      
+      {/* Toast notifications */}
+      <Toaster />
     </div>
   );
 };

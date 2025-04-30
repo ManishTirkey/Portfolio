@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { Mail, Send } from "lucide-react";
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ const ContactSection = () => {
     email: "",
     message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
   const handleChange = (
@@ -20,15 +22,41 @@ const ContactSection = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real application, you would send this data to your backend
-    console.log("Form submitted:", formData);
-    toast({
-      title: "Message sent!",
-      description: "Thank you for reaching out. I'll get back to you soon.",
-    });
-    setFormData({ name: "", email: "", message: "" });
+    setIsSubmitting(true);
+
+    try {
+      // Send form data to our email handler
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast({
+          title: "Message sent successfully!",
+          description: "Thank you for reaching out. I'll get back to you soon.",
+        });
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        throw new Error(data.error || 'Failed to send message');
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+      toast({
+        title: "Failed to send message",
+        description: "Please try again later or contact me directly.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -74,9 +102,16 @@ const ContactSection = () => {
         </div>
         <Button
           type="submit"
+          disabled={isSubmitting}
           className="w-full bg-sidebar-primary hover:bg-sidebar-primary/80 text-white transition-colors"
         >
-          Send Message
+          {isSubmitting ? (
+            <>Processing</>
+          ) : (
+            <>
+              <Send className="mr-2" size={16} /> Send Message
+            </>
+          )}
         </Button>
       </form>
     </div>
