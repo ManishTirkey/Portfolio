@@ -1,5 +1,4 @@
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Taskbar from '@/components/Taskbar';
 import MusicPlayer from '@/components/MusicPlayer';
 import AboutSection from '@/components/AboutSection';
@@ -11,7 +10,14 @@ import { cn } from '@/lib/utils';
 import WelcomeSection from '@/components/WelcomeSection';
 
 const Index = () => {
+  // Separate state for content section and music section
   const [activeSection, setActiveSection] = useState<string>('music');
+  const [activeContent, setActiveContent] = useState<string | null>(null);
+
+  // Set music as default on initial load
+  useEffect(() => {
+    setActiveSection('music');
+  }, []);
 
   const handleMenuItemClick = (section: string) => {
     // Handle external links
@@ -25,7 +31,27 @@ const Index = () => {
       return;
     }
     
+    // If clicking on music, toggle other content sections
+    if (section === 'music') {
+      setActiveContent(null); // Clear content when clicking on music
+    } else {
+      // For content sections, toggle them on/off
+      setActiveContent(prevContent => prevContent === section ? null : section);
+    }
+    
+    // Always keep track of the active section for highlighting in taskbar
     setActiveSection(section);
+  };
+
+  // Determine which content to show
+  const renderContent = () => {
+    if (activeContent === 'about') return <AboutSection />;
+    if (activeContent === 'projects') return <ProjectsSection />;
+    if (activeContent === 'contact') return <ContactSection />;
+    if (activeContent === 'github' || activeContent === 'linkedin') return <SocialLinks />;
+    
+    // Default to welcome when no content is selected
+    return <WelcomeSection />;
   };
 
   return (
@@ -47,13 +73,9 @@ const Index = () => {
         <div className="container max-w-6xl px-4 mx-auto">
           {/* Content wrapper */}
           <div className="flex flex-wrap items-center justify-center gap-8">
-            {/* Content sections - only one shown at a time */}
+            {/* Content sections - always show content with welcome as default */}
             <div className="transition-all duration-500">
-              {activeSection === 'welcome' && <WelcomeSection />}
-              {activeSection === 'about' && <AboutSection />}
-              {activeSection === 'projects' && <ProjectsSection />}
-              {activeSection === 'contact' && <ContactSection />}
-              {(activeSection === 'github' || activeSection === 'linkedin') && <SocialLinks />}
+              {renderContent()}
             </div>
             
             {/* Music player - always visible but highlighted when selected */}

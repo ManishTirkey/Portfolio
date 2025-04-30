@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { User, FolderKanban, Mail, Github, Linkedin, Music, Home } from 'lucide-react';
+import { User, FolderKanban, Mail, Github, Linkedin, Music } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface TaskbarProps {
@@ -12,7 +12,6 @@ const Taskbar = ({ onMenuItemClick, activeSection }: TaskbarProps) => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
   const menuItems = [
-    { id: 'welcome', icon: Home, label: 'Welcome' },
     { id: 'about', icon: User, label: 'About' },
     { id: 'projects', icon: FolderKanban, label: 'Projects' },
     { id: 'contact', icon: Mail, label: 'Contact Me' },
