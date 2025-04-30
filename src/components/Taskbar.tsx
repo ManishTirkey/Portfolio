@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { User, FolderKanban, Mail, Github, Linkedin, Music } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface TaskbarProps {
   onMenuItemClick: (section: string) => void;
@@ -10,6 +11,7 @@ interface TaskbarProps {
 
 const Taskbar = ({ onMenuItemClick, activeSection }: TaskbarProps) => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const isMobile = useIsMobile();
 
   const menuItems = [
     { id: 'about', icon: User, label: 'About' },
@@ -20,6 +22,35 @@ const Taskbar = ({ onMenuItemClick, activeSection }: TaskbarProps) => {
     { id: 'music', icon: Music, label: 'Music' },
   ];
 
+  // Mobile taskbar at bottom
+  if (isMobile) {
+    return (
+      <div className="fixed bottom-4 left-0 right-0 z-50 flex justify-center">
+        <div className="glass-taskbar-enhanced flex items-center justify-between px-4 py-3 rounded-full shadow-glow">
+          {menuItems.map((item) => {
+            const isActive = activeSection === item.id;
+            
+            return (
+              <button
+                key={item.id}
+                onClick={() => onMenuItemClick(item.id)}
+                className={cn(
+                  "p-2 mx-1 rounded-full transition-all duration-300 icon-hover",
+                  isActive 
+                    ? "bg-sidebar-primary text-white shadow-glow-sm scale-110" 
+                    : "text-sidebar-foreground hover:text-white"
+                )}
+              >
+                <item.icon size={20} className={isActive ? "animate-float" : ""} />
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  // Desktop taskbar on side
   return (
     <div className="fixed left-6 top-1/2 -translate-y-1/2 z-50">
       <div className="glass-taskbar-enhanced flex flex-col items-center justify-center py-8 px-4 gap-8 rounded-full shadow-glow">

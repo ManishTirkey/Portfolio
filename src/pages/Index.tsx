@@ -9,10 +9,12 @@ import SocialLinks from '@/components/SocialLinks';
 import BackgroundEffect from '@/components/BackgroundEffect';
 import { cn } from '@/lib/utils';
 import WelcomeSection from '@/components/WelcomeSection';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Index = () => {
   // Single state to track which section is active
   const [activeSection, setActiveSection] = useState<string | null>('music');
+  const isMobile = useIsMobile();
 
   // Set music as default on initial load
   useEffect(() => {
@@ -50,7 +52,10 @@ const Index = () => {
       />
       
       {/* Main content */}
-      <div className="flex items-center justify-center min-h-screen py-20">
+      <div className={cn(
+        "flex items-center justify-center min-h-screen",
+        isMobile ? "py-20 pb-28" : "py-20" // Extra bottom padding on mobile for taskbar
+      )}>
         <div className="container max-w-6xl px-4 mx-auto">
           {/* Content wrapper */}
           <div className="flex flex-wrap items-center justify-center gap-8">
@@ -67,7 +72,10 @@ const Index = () => {
           </div>
           
           {/* Footer */}
-          <div className="mt-16 text-center text-sm text-white/40">
+          <div className={cn(
+            "text-center text-sm text-white/40",
+            isMobile ? "mt-8 mb-16" : "mt-16" // Adjust footer spacing on mobile
+          )}>
             <p>© 2024 Glass Portfolio · Built with React & Tailwind CSS</p>
           </div>
         </div>
