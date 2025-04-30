@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Taskbar from '@/components/Taskbar';
 import MusicPlayer from '@/components/MusicPlayer';
@@ -10,9 +11,8 @@ import { cn } from '@/lib/utils';
 import WelcomeSection from '@/components/WelcomeSection';
 
 const Index = () => {
-  // Separate state for content section and music section
-  const [activeSection, setActiveSection] = useState<string>('music');
-  const [activeContent, setActiveContent] = useState<string | null>(null);
+  // Single state to track which section is active
+  const [activeSection, setActiveSection] = useState<string | null>('music');
 
   // Set music as default on initial load
   useEffect(() => {
@@ -31,27 +31,8 @@ const Index = () => {
       return;
     }
     
-    // If clicking on music, toggle other content sections
-    if (section === 'music') {
-      setActiveContent(null); // Clear content when clicking on music
-    } else {
-      // For content sections, toggle them on/off
-      setActiveContent(prevContent => prevContent === section ? null : section);
-    }
-    
-    // Always keep track of the active section for highlighting in taskbar
-    setActiveSection(section);
-  };
-
-  // Determine which content to show
-  const renderContent = () => {
-    if (activeContent === 'about') return <AboutSection />;
-    if (activeContent === 'projects') return <ProjectsSection />;
-    if (activeContent === 'contact') return <ContactSection />;
-    if (activeContent === 'github' || activeContent === 'linkedin') return <SocialLinks />;
-    
-    // Default to welcome when no content is selected
-    return <WelcomeSection />;
+    // Toggle sections - if clicking the same section, set to null (nothing selected)
+    setActiveSection(prevSection => prevSection === section ? null : section);
   };
 
   return (
@@ -65,7 +46,7 @@ const Index = () => {
       {/* Taskbar */}
       <Taskbar 
         onMenuItemClick={handleMenuItemClick}
-        activeSection={activeSection}
+        activeSection={activeSection || ''}
       />
       
       {/* Main content */}
@@ -73,17 +54,15 @@ const Index = () => {
         <div className="container max-w-6xl px-4 mx-auto">
           {/* Content wrapper */}
           <div className="flex flex-wrap items-center justify-center gap-8">
-            {/* Content sections - always show content with welcome as default */}
+            {/* Conditional rendering based on active section */}
             <div className="transition-all duration-500">
-              {renderContent()}
-            </div>
-            
-            {/* Music player - always visible but highlighted when selected */}
-            <div className={cn(
-              "transition-all duration-500",
-              activeSection === 'music' ? "scale-110" : "scale-100"
-            )}>
-              <MusicPlayer />
+              {activeSection === 'about' && <AboutSection />}
+              {activeSection === 'projects' && <ProjectsSection />}
+              {activeSection === 'contact' && <ContactSection />}
+              {activeSection === 'music' && <MusicPlayer />}
+              {(activeSection === 'github' || activeSection === 'linkedin') && <SocialLinks />}
+              {/* Show welcome content when nothing is selected */}
+              {activeSection === null && <WelcomeSection />}
             </div>
           </div>
           
