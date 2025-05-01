@@ -2,8 +2,7 @@
 import { Resend } from 'resend';
 
 // Initialize Resend with your API key
-// In production, you should use environment variables for API keys
-const resend = new Resend('re_YOUR_RESEND_API_KEY_HERE'); // Replace with your actual API key
+const resend = new Resend('re_7w4PwWYH_6FTjuyZoahT1jQsuKZoXncwE');
 
 export async function POST(request: Request) {
   try {
@@ -25,7 +24,7 @@ export async function POST(request: Request) {
     // Send notification email to site owner
     const ownerEmailResult = await resend.emails.send({
       from: 'Portfolio Contact Form <onboarding@resend.dev>', // Use your verified domain in production
-      to: 'your-email@example.com', // Replace with your email
+      to: 'manishoraon608@gmail.com', // Your email address
       subject: `New contact form submission from ${name}`,
       text: `
         Name: ${name}
@@ -48,7 +47,7 @@ export async function POST(request: Request) {
         "${message}"
 
         Best regards,
-        Your Name
+        Manish
       `,
     });
 
