@@ -30,8 +30,8 @@ const ContactSection = () => {
     setSubmitError(null);
 
     try {
-      // Send form data to our email handler - Updated path to match the new route
-      const response = await fetch('/app/api/send-email', {
+      // Fixed API endpoint path - use the relative path for Vite
+      const response = await fetch('/api/send-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
