@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { Mail, Send } from "lucide-react";
+import { Send } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const ContactSection = () => {
@@ -30,8 +30,8 @@ const ContactSection = () => {
     setSubmitError(null);
 
     try {
-      // Send form data to our email handler
-      const response = await fetch('/api/send-email', {
+      // Send form data to our email handler - Updated path to match the new route
+      const response = await fetch('/app/api/send-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

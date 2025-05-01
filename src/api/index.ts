@@ -2,8 +2,8 @@
 // Import the POST handler first
 import { POST } from './send-email';
 
-// Export the POST handler directly
-export { POST } from './send-email';
+// Export the POST handler
+export { POST };
 
-// Export it as default as well, but with the proper object literal syntax
+// Also export it as default
 export default { POST };
