@@ -63,9 +63,9 @@ const Index = () => {
         </div>
       )}
       
-      {/* Mini Music Player - Shown when music is not the active section */}
-      {activeSection !== 'music' && isPlaying && (
-        <div className="fixed z-40 top-6 right-6 transition-all duration-500 animate-fade-in">
+      {/* Mini Music Player - Always shown when music is not the active section */}
+      {activeSection !== 'music' && (
+        <div className="fixed z-50 top-6 right-6 transition-all duration-500">
           <MusicPlayer 
             isPlaying={isPlaying}
             setIsPlaying={setIsPlaying}

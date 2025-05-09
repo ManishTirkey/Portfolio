@@ -52,15 +52,18 @@ const MusicPlayer = ({
   // Render mini player version
   if (isMini) {
     return (
-      <div className="glass-card p-2 flex items-center gap-2 w-auto">
+      <div className="glass-card p-2 flex items-center gap-2 w-auto shadow-glow">
         {/* Mini cover art */}
-        <div className="relative w-10 h-10 rounded-md overflow-hidden">
+        <div className="relative w-10 h-10 rounded-md overflow-hidden shadow-glow-sm">
           <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?q=80&w=1974')] bg-cover bg-center rounded-md"></div>
         </div>
         
         {/* Mini controls */}
         <div className="flex items-center gap-2">
-          <button className="text-gray-400 hover:text-white transition-colors">
+          <button 
+            onClick={() => setCurrentTime(Math.max(0, currentTime - 30))}
+            className="text-gray-400 hover:text-white transition-colors"
+          >
             <SkipBack size={16} />
           </button>
           
@@ -71,7 +74,10 @@ const MusicPlayer = ({
             {isPlaying ? <Pause size={14} /> : <Play size={14} />}
           </button>
           
-          <button className="text-gray-400 hover:text-white transition-colors">
+          <button 
+            onClick={() => setCurrentTime(Math.min(songDuration, currentTime + 30))}
+            className="text-gray-400 hover:text-white transition-colors"
+          >
             <SkipForward size={16} />
           </button>
         </div>
