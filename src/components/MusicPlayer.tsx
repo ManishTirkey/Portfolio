@@ -9,9 +9,16 @@ interface MusicPlayerProps {
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
   currentTime: number;
   setCurrentTime: React.Dispatch<React.SetStateAction<number>>;
+  isMini?: boolean;
 }
 
-const MusicPlayer = ({ isPlaying, setIsPlaying, currentTime, setCurrentTime }: MusicPlayerProps) => {
+const MusicPlayer = ({ 
+  isPlaying, 
+  setIsPlaying, 
+  currentTime, 
+  setCurrentTime,
+  isMini = false 
+}: MusicPlayerProps) => {
   const songDuration = 217; // 3:37 in seconds
   
   // Auto-progress if playing
@@ -41,7 +48,38 @@ const MusicPlayer = ({ isPlaying, setIsPlaying, currentTime, setCurrentTime }: M
   };
   
   const togglePlay = () => setIsPlaying(!isPlaying);
+
+  // Render mini player version
+  if (isMini) {
+    return (
+      <div className="glass-card p-2 flex items-center gap-2 w-auto">
+        {/* Mini cover art */}
+        <div className="relative w-10 h-10 rounded-md overflow-hidden">
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?q=80&w=1974')] bg-cover bg-center rounded-md"></div>
+        </div>
+        
+        {/* Mini controls */}
+        <div className="flex items-center gap-2">
+          <button className="text-gray-400 hover:text-white transition-colors">
+            <SkipBack size={16} />
+          </button>
+          
+          <button 
+            onClick={togglePlay}
+            className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+          >
+            {isPlaying ? <Pause size={14} /> : <Play size={14} />}
+          </button>
+          
+          <button className="text-gray-400 hover:text-white transition-colors">
+            <SkipForward size={16} />
+          </button>
+        </div>
+      </div>
+    );
+  }
   
+  // Render full player version
   return (
     <div className="glass-card w-[340px] p-5">
       <div className="flex flex-col gap-4">

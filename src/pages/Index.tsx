@@ -51,18 +51,30 @@ const Index = () => {
       {/* Dark overlay */}
       <div className="fixed inset-0 bg-gradient-to-br from-black/40 to-purple-900/10 -z-10"></div>
       
-      {/* Persistent Music Player - Always rendered but can be hidden */}
-      <div className={cn(
-        "fixed z-40 top-24 right-6 transition-all duration-500",
-        activeSection !== 'music' ? "opacity-50 hover:opacity-100 scale-75 origin-top-right" : ""
-      )}>
-        <MusicPlayer 
-          isPlaying={isPlaying}
-          setIsPlaying={setIsPlaying}
-          currentTime={currentTime}
-          setCurrentTime={setCurrentTime}
-        />
-      </div>
+      {/* Full Music Player - Only shown when music section is active */}
+      {activeSection === 'music' && (
+        <div className="fixed z-40 top-24 right-6 transition-all duration-500">
+          <MusicPlayer 
+            isPlaying={isPlaying}
+            setIsPlaying={setIsPlaying}
+            currentTime={currentTime}
+            setCurrentTime={setCurrentTime}
+          />
+        </div>
+      )}
+      
+      {/* Mini Music Player - Shown when music is not the active section */}
+      {activeSection !== 'music' && isPlaying && (
+        <div className="fixed z-40 top-6 right-6 transition-all duration-500 animate-fade-in">
+          <MusicPlayer 
+            isPlaying={isPlaying}
+            setIsPlaying={setIsPlaying}
+            currentTime={currentTime}
+            setCurrentTime={setCurrentTime}
+            isMini={true}
+          />
+        </div>
+      )}
       
       {/* Taskbar */}
       <Taskbar 
@@ -83,10 +95,7 @@ const Index = () => {
               {activeSection === 'about' && <AboutSection />}
               {activeSection === 'projects' && <ProjectsSection />}
               {activeSection === 'contact' && <ContactSection />}
-              {/* Don't show large music player when viewing other sections */}
-              {activeSection === 'music' && null /* Music player is now persistent */}
               {activeSection === 'github' || activeSection === 'linkedin' ? <SocialLinks /> : null}
-              {/* Show welcome content when nothing is selected */}
               {activeSection === null && <WelcomeSection />}
             </div>
           </div>
