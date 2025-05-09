@@ -16,6 +16,10 @@ const Index = () => {
   // Single state to track which section is active
   const [activeSection, setActiveSection] = useState<string | null>('music');
   const isMobile = useIsMobile();
+  
+  // Music player state
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
 
   // Set music as default on initial load
   useEffect(() => {
@@ -35,6 +39,7 @@ const Index = () => {
     }
     
     // Toggle sections - if clicking the same section, set to null (nothing selected)
+    // But don't affect music player state
     setActiveSection(prevSection => prevSection === section ? null : section);
   };
 
@@ -45,6 +50,19 @@ const Index = () => {
       
       {/* Dark overlay */}
       <div className="fixed inset-0 bg-gradient-to-br from-black/40 to-purple-900/10 -z-10"></div>
+      
+      {/* Persistent Music Player - Always rendered but can be hidden */}
+      <div className={cn(
+        "fixed z-40 top-24 right-6 transition-all duration-500",
+        activeSection !== 'music' ? "opacity-50 hover:opacity-100 scale-75 origin-top-right" : ""
+      )}>
+        <MusicPlayer 
+          isPlaying={isPlaying}
+          setIsPlaying={setIsPlaying}
+          currentTime={currentTime}
+          setCurrentTime={setCurrentTime}
+        />
+      </div>
       
       {/* Taskbar */}
       <Taskbar 
@@ -65,8 +83,9 @@ const Index = () => {
               {activeSection === 'about' && <AboutSection />}
               {activeSection === 'projects' && <ProjectsSection />}
               {activeSection === 'contact' && <ContactSection />}
-              {activeSection === 'music' && <MusicPlayer />}
-              {(activeSection === 'github' || activeSection === 'linkedin') && <SocialLinks />}
+              {/* Don't show large music player when viewing other sections */}
+              {activeSection === 'music' && null /* Music player is now persistent */}
+              {activeSection === 'github' || activeSection === 'linkedin' ? <SocialLinks /> : null}
               {/* Show welcome content when nothing is selected */}
               {activeSection === null && <WelcomeSection />}
             </div>

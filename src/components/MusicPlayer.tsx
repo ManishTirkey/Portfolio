@@ -1,12 +1,17 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Play, Pause, SkipBack, SkipForward, Volume2 } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
 import { cn } from '@/lib/utils';
 
-const MusicPlayer = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
+interface MusicPlayerProps {
+  isPlaying: boolean;
+  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
+  currentTime: number;
+  setCurrentTime: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const MusicPlayer = ({ isPlaying, setIsPlaying, currentTime, setCurrentTime }: MusicPlayerProps) => {
   const songDuration = 217; // 3:37 in seconds
   
   // Auto-progress if playing
@@ -26,7 +31,7 @@ const MusicPlayer = () => {
     }
     
     return () => clearInterval(interval);
-  }, [isPlaying]);
+  }, [isPlaying, setCurrentTime, setIsPlaying, songDuration]);
   
   // Format time as mm:ss
   const formatTime = (seconds: number) => {
