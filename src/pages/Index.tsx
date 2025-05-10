@@ -28,7 +28,8 @@ const Index = () => {
   // Set music as default on initial load
   useEffect(() => {
 
-    setActiveSection('music');
+    // setActiveSection('music');
+    setActiveSection(null)
   }, []);
 
   const handleMenuItemClick = (section: string) => {
