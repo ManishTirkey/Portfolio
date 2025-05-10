@@ -6,10 +6,13 @@ on:
   
 jobs:  
   build-and-deploy:  
-    runs-on: ubuntu-latest  
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      
     steps:  
       - name: Checkout  
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
           
       - name: Set up Node.js  
         uses: actions/setup-node@v3  
@@ -28,3 +31,6 @@ jobs:
         with:  
           folder: dist  # The folder the action should deploy  
           branch: gh-pages  # The branch the action should deploy to
+          clean: true
+          force: true
+          attempt-limit: 3
