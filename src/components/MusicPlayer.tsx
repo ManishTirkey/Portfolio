@@ -4,66 +4,139 @@ import { Play, Pause, SkipBack, SkipForward, Volume2, Volume } from 'lucide-reac
 import { Slider } from '@/components/ui/slider';
 import { cn } from '@/lib/utils';
 import { MusicController } from './MusicController';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { Progress } from '@/components/ui/progress';
 
-interface MusicPlayerProps{
+interface MusicPlayerProps {
   Controller: MusicController;
   isMini?: boolean; // optional
 }
 
-const MusicPlayer : React.FC<MusicPlayerProps> = ({Controller, isMini=false}) => {
+const MusicPlayer: React.FC<MusicPlayerProps> = ({ Controller, isMini = false }) => {
+  // mobile devices
+  const isMobile = useIsMobile();
+
+
   const [CurrentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(Controller.volume); // Initialize volume state with Controller's initial volume
 
-  const handleTime = (time: number)=>{
-    setCurrentTime(time);    
+  const handleTime = (time: number) => {
+    setCurrentTime(time);
   }
-  
 
-  useEffect(()=>{
+  const handleVolume = (vol: number) => {
+    setVolume(vol);
+    Controller.setVolume(vol);
+  }
+
+  useEffect(() => {
+    Controller.onLoadedMetadata(async () => {
+      setDuration(await Controller.getDuration() || 0);
+    });
+
     Controller.onTimeUpdate(handleTime);
-    setCurrentTime(Controller.getCurrentTime() || 0);    
+
+    setCurrentTime(Controller.getCurrentTime());
+    setVolume(Controller.volume); // Initialize volume state
   }, [])
-  
 
   // Render mini player version
   if (isMini) {
-    return (
-      <div className="fixed z-50 bottom-8 right-10 transition-all duration-500 bg-red-100/20 rounded-lg shadow-lg">
-        <div className="glass-card p-2 flex items-center gap-2 w-auto shadow-glow">
-          {/* Mini cover art */}
-          <div className="relative w-10 h-10 rounded-md overflow-hidden shadow-glow-sm">
-            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?q=80&w=1974')] bg-cover bg-center rounded-md"></div>
+
+    // render for mobile devices
+    if (isMobile) {
+      return (
+        <div className="fixed z-50 bottom-20 right-4 transition-all duration-500 bg-black/20 backdrop-blur-md rounded-lg shadow-lg border border-white/10 overflow-hidden">
+          <div className="glass-card flex flex-col items-center gap-2 p-2 shadow-glow">
+            {/* Mini cover art */}
+            <div className="relative w-10 h-10 rounded-md overflow-hidden shadow-glow-sm">
+              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?q=80&w=1974')] bg-cover bg-center rounded-md"></div>
+            </div>
+
+            {/* Mini controls - vertical layout for mobile */}
+            <div className="flex flex-col items-center gap-2">
+              {/* prevSong */}
+              <button
+                onClick={Controller.prevSong}
+                className="text-gray-400 hover:text-white transition-colors w-8 h-8 flex items-center justify-center"
+              >
+                <SkipBack size={16} />
+              </button>
+
+              {/* play/pause */}
+              <button
+                onClick={Controller.togglePlay}
+                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+              >
+                {Controller.isPlaying ? <Pause size={14} /> : <Play size={14} />}
+              </button>
+
+              {/* nextSong */}
+              <button
+                onClick={Controller.nextSong}
+                className="text-gray-400 hover:text-white transition-colors w-8 h-8 flex items-center justify-center"
+              >
+                <SkipForward size={16} />
+              </button>
+            </div>
           </div>
 
-          {/* Mini controls */}
-          <div className="flex items-center gap-2">
-
-            {/* prevSong */}
-            <button
-              onClick={Controller.prevSong}
-              className="text-gray-400 hover:text-white transition-colors"
-            >
-              <SkipBack size={16} />
-            </button>
-
-            {/* play/pause */}
-            <button
-              onClick={Controller.togglePlay}
-              className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
-            >
-              {Controller.isPlaying ? <Pause size={14} /> : <Play size={14} />}
-            </button>
-
-            {/* nextSong */}
-            <button
-              onClick={Controller.nextSong}
-              className="text-gray-400 hover:text-white transition-colors"
-            >
-              <SkipForward size={16} />
-            </button>
-          </div>
+          {/* 1px progress bat at bottom */}
+          <Progress 
+          value={(CurrentTime / ( Controller.Duration() || 1)) * 100} 
+          className="h-1 w-full rounded-none bg-black/30"
+          />
         </div>
-      </div>
-    );
+      );
+    }
+
+    // render for tab/desktop
+    else {
+      return (
+        <div className="fixed z-50 bottom-6 right-6 transition-all duration-500 bg-red-100/20 backdrop-blur-md rounded-lg shadow-lg border border-white/10 overflow-hidden">
+          <div className="glass-card p-2 flex items-center gap-2 w-auto shadow-glow">
+            {/* Mini cover art */}
+            <div className="relative w-10 h-10 rounded-md overflow-hidden shadow-glow-sm">
+              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?q=80&w=1974')] bg-cover bg-center rounded-md"></div>
+            </div>
+
+            {/* Mini controls */}
+            <div className="flex items-center gap-2">
+
+              {/* prevSong */}
+              <button
+                onClick={Controller.prevSong}
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <SkipBack size={16} />
+              </button>
+
+              {/* play/pause */}
+              <button
+                onClick={Controller.togglePlay}
+                className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+              >
+                {Controller.isPlaying ? <Pause size={14} /> : <Play size={14} />}
+              </button>
+
+              {/* nextSong */}
+              <button
+                onClick={Controller.nextSong}
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <SkipForward size={16} />
+              </button>
+            </div>
+          </div>
+
+          <Progress 
+          value={(CurrentTime/ (Controller.Duration() || 1)) * 100} 
+          className="h-1 w-full rounded-none bg-black/30"
+          />
+        </div>
+      );
+    }
   }
 
   // Render full player version
@@ -99,8 +172,8 @@ const MusicPlayer : React.FC<MusicPlayerProps> = ({Controller, isMini=false}) =>
 
           {/* prevSong */}
           <button
-          onClick={Controller.prevSong} 
-          className="text-gray-400 hover:text-white transition-colors">
+            onClick={Controller.prevSong}
+            className="text-gray-400 hover:text-white transition-colors">
             <SkipBack size={20} />
           </button>
 
@@ -114,8 +187,8 @@ const MusicPlayer : React.FC<MusicPlayerProps> = ({Controller, isMini=false}) =>
 
           {/* nextSong */}
           <button
-          onClick={Controller.nextSong} 
-          className="text-gray-400 hover:text-white transition-colors">
+            onClick={Controller.nextSong}
+            className="text-gray-400 hover:text-white transition-colors">
             <SkipForward size={20} />
           </button>
         </div>
@@ -124,14 +197,14 @@ const MusicPlayer : React.FC<MusicPlayerProps> = ({Controller, isMini=false}) =>
         <div className="space-y-1">
           <Slider
             value={[CurrentTime]}
-            max={Controller.getDuration() || 100}
+            max={Controller.Duration()}
             step={1}
             onValueChange={(values) => Controller.seekTo(values[0])}
             className="cursor-pointer"
           />
           <div className="flex justify-between text-xs text-gray-400">
             <span>{Controller.formatedCurTime()}</span>
-            <span>{Controller.formatedDuration() || 0}</span>
+            <span>{Controller.formatedDuration()}</span>
           </div>
         </div>
 
@@ -139,10 +212,10 @@ const MusicPlayer : React.FC<MusicPlayerProps> = ({Controller, isMini=false}) =>
         <div className="flex items-center gap-2">
           <Volume2 size={16} className="text-gray-400" />
           <Slider
-            value={[Controller.volume]}
+            value={[volume]} // Use the volume state variable
             max={1}
             step={0.01}
-            onValueChange={(values) => Controller.setVolume(values[0])}
+            onValueChange={(values) => handleVolume(values[0])}
             className="cursor-pointer"
           />
         </div>

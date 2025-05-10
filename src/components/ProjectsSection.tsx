@@ -9,6 +9,7 @@ import {
   CarouselNext 
 } from "@/components/ui/carousel";
 import { cn } from '@/lib/utils';
+import { useIsProjects } from '@/hooks/use-projects';
 
 const projects = [
   {
@@ -76,6 +77,9 @@ const projects = [
 ];
 
 const ProjectsSection = () => {
+  // breakpoints
+  const isProjects = useIsProjects();
+
   const [expanded, setExpanded] = useState<number | null>(null);
 
   const getIconComponent = (iconName: string) => {
@@ -100,7 +104,9 @@ const ProjectsSection = () => {
   // };
 
   return (
-    <div className="glass-card p-6 max-w-4xl w-full">
+    <div className={cn(
+      "glass-card p-6 w-full",
+      isProjects ? "max-w-2xl" : "max-w-4xl")}>
       <h2 className="text-2xl font-bold mb-6 text-gradient text-glow">Projects</h2>
       <div className="grid gap-6">
         {projects.map((project, index) => (

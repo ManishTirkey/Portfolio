@@ -14,111 +14,6 @@ import { Toaster } from '@/components/ui/toaster';
 import { MusicController } from '@/components/MusicController';
 
 const Index = () => {
-// --------------------music control-------------------
-  // const [currentIndex, setCurrentIndex] = useState(
-  //   Math.floor(Math.random() * songs.length)
-  // );
-
-    // Music player state
-  // const [isPlaying, setIsPlaying] = useState(false);
-  // const [currentTime, setCurrentTime] = useState(0);
-  // const [volume, setVolume] = useState(0.7);
-  // const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  // const currentSong = songs[currentIndex];
-
-
-  // useEffect(() => {
-    // if (!audioRef.current) return;
-
-    // const audio = audioRef.current;
-    // audio.src = currentSong.url;
-    // audio.volume = volume;
-    // setCurrentTime(0);
-
-    // if (isPlaying) {
-    //   audio
-    //     .play()
-    //     .catch((err) => console.error('Audio playback failed:', err));
-    // }
-  // }, [currentIndex]);
-
-
-  // useEffect(() => {
-  //   const audio = audioRef.current;
-  //   if (!audio) return;
-
-  //   const handleTimeUpdate = () => {
-  //     setCurrentTime(audio.currentTime);
-  //   };
-
-  //   const handleEnded = () => {
-  //     nextSong();
-  //   };
-
-  //   audio.addEventListener('timeupdate', handleTimeUpdate);
-  //   audio.addEventListener('ended', handleEnded);
-
-  //   return () => {
-  //     audio.removeEventListener('timeupdate', handleTimeUpdate);
-  //     audio.removeEventListener('ended', handleEnded);
-  //   };
-  // }, [audioRef.current]);
-
-
-
-  // -----------------controllers
-
-  // const togglePlay = () => {
-  //   if (!audioRef.current) return;
-  //   if (isPlaying) {
-  //     audioRef.current.pause();
-  //   } else {
-  //     audioRef.current
-  //       .play()
-  //       .catch((err) => console.error('Audio playback failed:', err));
-  //   }
-  //   setIsPlaying(!isPlaying);
-  // };
-
-  // const nextSong = () => {
-  //   setCurrentIndex((prev) => (prev + 1) % songs.length);
-  // };
-
-  // const prevSong = () => {
-  //   setCurrentIndex((prev) =>
-  //     prev === 0 ? songs.length - 1 : prev - 1
-  //   );
-  // };
-
-  // const handleSeek = (value: number) => {
-  //   if (audioRef.current) {
-  //     audioRef.current.currentTime = value;
-  //     setCurrentTime(value);
-  //   }
-  // };
-
-  // const handleVolume = (value: number) => {
-  //   setVolume(value);
-  //   if (audioRef.current) {
-  //     audioRef.current.volume = value;
-  //   }
-  // };
-
-  // const SongDuration = () =>{
-  //   if (audioRef.current) {
-  //     return audioRef.current.duration;
-  //   }
-  //   return 0;
-  // }
-
-  // const formatTime = (seconds: number) => {
-  //   const mins = Math.floor(seconds / 60);
-  //   const secs = Math.floor(seconds % 60);
-  //   return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-  // };
-
-// --------------------------------------------------------  
 
   // Single state to track which section is active
   const [activeSection, setActiveSection] = useState<string | null>('music');
@@ -161,21 +56,9 @@ const Index = () => {
       {/* Dark overlay */}
       <div className="fixed inset-0 bg-gradient-to-br from-black/40 to-purple-900/10 -z-10"></div>
       
-      {/* Full Music Player - Only shown when music section is active */}
-      {/* {activeSection === 'music' && (
-        <div className="flex flex-wrap items-center justify-center gap-8 transition-all duration-500">
-          <MusicPlayer 
-            isPlaying={isPlaying}
-            setIsPlaying={setIsPlaying}
-            currentTime={currentTime}
-            setCurrentTime={setCurrentTime}
-          />
-        </div>
-      )} */}
-      
       {/* Mini Music Player - Always shown when music is not the active section */}
       {activeSection !== 'music' && (
-        <div className="fixed z-50 top-6 right-6 transition-all duration-500">
+        <div className="fixed z-50 bottom-8 right-10 transition-all duration-500">
            <MusicPlayer Controller={controller} isMini={true}/>
         </div>
       )}
