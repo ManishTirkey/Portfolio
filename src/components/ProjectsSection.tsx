@@ -19,8 +19,8 @@ const projects = [
     demo: "#",
     icon: "image",
     screenshots: [
-      "https://github.com/ManishTirkey/Face-Recognition-for-Attendance/blob/main/public/Project%20ScreenShots/Screenshot%20(66).png",
-      "https://github.com/ManishTirkey/Face-Recognition-for-Attendance/blob/main/public/Project%20ScreenShots/Screenshot%20(67).png"
+      "https://raw.githubusercontent.com/ManishTirkey/Face-Recognition-for-Attendance/main/public/Project%20ScreenShots/Screenshot%20(66).png",
+      "https://raw.githubusercontent.com/ManishTirkey/Face-Recognition-for-Attendance/main/public/Project%20ScreenShots/Screenshot%20(67).png"
     ]
   },
   {
@@ -31,11 +31,11 @@ const projects = [
     demo: "#",
     icon: "lock",
     screenshots: [
-      "https://github.com/ManishTirkey/Password-Manager/blob/main/Screenshots/1.png",
-      "https://github.com/ManishTirkey/Password-Manager/blob/main/Screenshots/2.png",
-      "https://github.com/ManishTirkey/Password-Manager/blob/main/Screenshots/3.png",
-      "https://github.com/ManishTirkey/Password-Manager/blob/main/Screenshots/4.png",
-      "https://github.com/ManishTirkey/Password-Manager/blob/main/Screenshots/5.png"
+      "https://raw.githubusercontent.com/ManishTirkey/Password-Manager/main/Screenshots/1.png",
+      "https://raw.githubusercontent.com/ManishTirkey/Password-Manager/main/Screenshots/2.png",
+      "https://raw.githubusercontent.com/ManishTirkey/Password-Manager/main/Screenshots/3.png",
+      "https://raw.githubusercontent.com/ManishTirkey/Password-Manager/main/Screenshots/4.png",
+      "https://raw.githubusercontent.com/ManishTirkey/Password-Manager/main/Screenshots/5.png"
     ]
   },
   {
@@ -46,8 +46,8 @@ const projects = [
     demo: "#",
     icon: "camera",
     screenshots: [
-      "https://github.com/ManishTirkey/QT-ScreenShot/blob/main/Screenshots/1.png",
-      "https://github.com/ManishTirkey/QT-ScreenShot/blob/main/Screenshots/2.png"
+      "https://raw.githubusercontent.com/ManishTirkey/QT-ScreenShot/main/Screenshots/1.png",
+      "https://raw.githubusercontent.com/ManishTirkey/QT-ScreenShot/main/Screenshots/2.png"
     ]
   },
   {
@@ -58,10 +58,10 @@ const projects = [
     demo: "#",
     icon: "camera",
     screenshots: [
-      "https://github.com/ManishTirkey/ScreenShot/blob/v1.0.0/Screenshots/1.png",
-      "https://github.com/ManishTirkey/ScreenShot/blob/v1.0.0/Screenshots/2.png",
-      "https://github.com/ManishTirkey/ScreenShot/blob/v1.0.0/Screenshots/3.png",
-      "https://github.com/ManishTirkey/ScreenShot/blob/v1.0.0/Screenshots/Tray.png"
+      "https://raw.githubusercontent.com/ManishTirkey/ScreenShot/v1.0.0/Screenshots/1.png",
+      "https://raw.githubusercontent.com/ManishTirkey/ScreenShot/v1.0.0/Screenshots/2.png",
+      "https://raw.githubusercontent.com/ManishTirkey/ScreenShot/v1.0.0/Screenshots/3.png",
+      "https://raw.githubusercontent.com/ManishTirkey/ScreenShot/v1.0.0/Screenshots/Tray.png"
     ]
   },
   {
@@ -73,33 +73,6 @@ const projects = [
     icon: "square-check",
     screenshots: []
   },
-  {
-    title: "Glass Portfolio",
-    description: "A beautiful glassmorphism portfolio website with interactive elements and smooth animations.",
-    tech: ["React", "TypeScript", "Tailwind CSS"],
-    github: "#",
-    demo: "#",
-    icon: "file-text",
-    screenshots: []
-  },
-  {
-    title: "Music Visualizer",
-    description: "Interactive audio visualization tool that creates beautiful patterns based on music input.",
-    tech: ["WebGL", "Three.js", "Web Audio API"],
-    github: "#",
-    demo: "#",
-    icon: "file-text",
-    screenshots: []
-  },
-  {
-    title: "Neural Canvas",
-    description: "AI-powered digital canvas that transforms simple sketches into detailed artwork.",
-    tech: ["TensorFlow.js", "React", "Canvas API"],
-    github: "#",
-    demo: "#",
-    icon: "file-text",
-    screenshots: []
-  }
 ];
 
 const ProjectsSection = () => {
@@ -122,9 +95,9 @@ const ProjectsSection = () => {
     }
   };
 
-  const toggleExpand = (index: number) => {
-    setExpanded(expanded === index ? null : index);
-  };
+  // const toggleExpand = (index: number) => {
+  //   setExpanded(expanded === index ? null : index);
+  // };
 
   return (
     <div className="glass-card p-6 max-w-4xl w-full">
@@ -135,7 +108,8 @@ const ProjectsSection = () => {
             key={index} 
             className={cn(
               "glass-morphism rounded-lg p-5 transition-all duration-500 hover:bg-white/10",
-              expanded === index ? "shadow-glow" : ""
+              // expanded === index ? "shadow-glow" : ""
+              "shadow-glow"
             )}
           >
             <div className="flex items-center gap-3 mb-2">
@@ -148,7 +122,8 @@ const ProjectsSection = () => {
             <p className="text-gray-300 mb-3">{project.description}</p>
             
             {/* Project screenshots carousel - only shown when expanded */}
-            {expanded === index && project.screenshots.length > 0 && (
+            {/* {expanded === index && project.screenshots.length > 0 && ( */}
+            {project.screenshots.length > 0 && (
               <div className="mb-4 rounded-lg overflow-hidden">
                 <Carousel className="w-full">
                   <CarouselContent>
@@ -209,14 +184,14 @@ const ProjectsSection = () => {
               </div>
               
               {/* Expand/collapse button */}
-              {project.screenshots.length > 0 && (
+              {/* {project.screenshots.length > 0 && (
                 <button
                   onClick={() => toggleExpand(index)}
                   className="text-sm text-gray-300 hover:text-sidebar-primary transition-colors"
                 >
                   {expanded === index ? "Collapse" : "View Screenshots"}
                 </button>
-              )}
+              )} */}
             </div>
           </div>
         ))}

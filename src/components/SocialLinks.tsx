@@ -6,13 +6,13 @@ const SocialLinks = () => {
     {
       name: "GitHub",
       icon: Github,
-      url: "https://github.com/",
+      url: "https://github.com/manishtirkey",
       color: "bg-gradient-to-br from-gray-700 to-gray-900"
     },
     {
       name: "LinkedIn",
       icon: Linkedin,
-      url: "https://linkedin.com/",
+      url: "https://www.linkedin.com/in/manish-t-b02a67205/",
       color: "bg-gradient-to-br from-blue-600 to-blue-800"
     }
   ];
