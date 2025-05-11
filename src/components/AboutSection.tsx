@@ -126,7 +126,7 @@ const AboutSection = () => {
         <div className="flex justify-center items-center">
           <div className="relative w-full max-w-xs aspect-square overflow-hidden rounded-xl border border-white/20 shadow-glow group">
             <img
-              src="https://images.unsplash.com/photo-1498050108023-c5249f4df085"
+              src="https://avatars.githubusercontent.com/u/65901594?s=400&u=bfc62001c3edf5742ff4d7180c323d0ba51b9735&v=4"
               alt="Developer"
               className="object-cover w-full h-full group-hover:scale-105 transition-all duration-700 group-hover:rotate-2"
             />
