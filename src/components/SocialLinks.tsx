@@ -1,4 +1,4 @@
-
+import { SocialLinksList } from '@/components/SocialLinksList';
 import { Github, Linkedin } from 'lucide-react';
 
 const SocialLinks = () => {
@@ -6,13 +6,13 @@ const SocialLinks = () => {
     {
       name: "GitHub",
       icon: Github,
-      url: "https://github.com/manishtirkey",
+      url: SocialLinksList.Github,
       color: "bg-gradient-to-br from-gray-700 to-gray-900"
     },
     {
       name: "LinkedIn",
       icon: Linkedin,
-      url: "https://www.linkedin.com/in/manish-t-b02a67205/",
+      url: SocialLinksList.Linkedin,
       color: "bg-gradient-to-br from-blue-600 to-blue-800"
     }
   ];
